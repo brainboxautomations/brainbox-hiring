@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Brainbox ATS — pre-commit. Scans staged changes for secrets, then formats and
+# lints staged files.
+# gitleaks runs from the repo root so it picks up `.gitleaks.toml`. It is
+# optional locally (CI is the enforcer), so a missing binary only warns.
+# package.json lives in `frontend/`, so lint-staged runs from there.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact --no-banner --verbose
+else
+  echo "warning: gitleaks is not installed, skipping the secret scan (brew install gitleaks)" >&2
+fi
+cd frontend
+npx lint-staged

@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest an improvement or a new feature.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. The scope of BrainBox ATS is deliberate: check "Deliberately absent" in docs/architecture.md first, in case it covers your idea.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation in your hiring process where the app falls short.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to happen?
+      description: How you imagine it working.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Other ways to solve it, or how you work around it today.
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you like to build it?
+      description: Contributions are welcome once the approach is agreed here. Your first pull request asks you to sign the CLA.
+      options:
+        - "No"
+        - Yes, with some guidance
+        - Yes
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this hasn't been suggested.
+          required: true

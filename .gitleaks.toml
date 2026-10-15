@@ -1,0 +1,30 @@
+# gitleaks configuration. Runs in the pre-commit hook and in CI.
+#
+# Extends the default ruleset. The allowlist below matches exact secret
+# VALUES, not files or folders, so a real key pasted into a test file is still
+# caught. Every entry is a fake value that a test relies on; none was ever a
+# real credential. Add a value here only after confirming it is fake.
+
+title = "Brainbox ATS gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Fake secrets used by tests"
+regexTarget = "secret"
+regexes = [
+  # base64 of "l3-inbound-webhook-secret-not-a-real-one", the L3 inbound webhook signing secret
+  '''^whsec_bDMtaW5ib3VuZC13ZWJob29rLXNlY3JldC1ub3QtYS1yZWFsLW9uZQ==$''',
+  # base64 of "forged-token-that-is-43-chars-long-aaaa", a forged questionnaire token
+  '''^Zm9yZ2VkLXRva2VuLXRoYXQtaXMtNDMtY2hhcnMtbG9uZy1hYWFh$''',
+  # the example signing secret from the Svix webhook verification docs
+  '''^whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw$''',
+  # made-up questionnaire token used by the schema and email tests
+  '''^8Kj2mQ7vX1pR4tY6uI0oP3aS5dF7gH9jK2lZ4xC6vB8$''',
+  # fake Slack app tokens the settings tests expect to be rejected
+  '''^xapp-1-A0-0-abc$''',
+  '''^xapp-1-A0000-0000-deadbeef$''',
+  # test password from the old reset-password schema test
+  '''^MissingSymbol1$''',
+]

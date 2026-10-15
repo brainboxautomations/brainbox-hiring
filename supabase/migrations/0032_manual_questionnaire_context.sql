@@ -1,0 +1,22 @@
+-- M7c, part 1 of 2: the questionnaire context a bulk send writes.
+--
+-- Until now a `questionnaire_responses` row was one of two things:
+--
+--   application_embedded — answered inside the public application form
+--   stage_sent           — created by a Send Questionnaire stage action
+--
+-- BLK-2/BLK-4 add a third: a human selected candidates on the board and sent
+-- them a questionnaire by hand. That is not a stage action — there is no
+-- `stage_actions` row behind it, so `stage_action_id` is null — and it is not an
+-- embedded application answer either. Reusing 'stage_sent' for it would make
+-- `stage_action_id is null and context = 'stage_sent'` mean "sent by a stage
+-- action that has since been deleted" AND "never sent by a stage action at all",
+-- which are different facts that the profile screen and the reminder producer
+-- both have to tell apart.
+--
+-- This migration adds the value and nothing else, deliberately. Postgres allows
+-- `alter type ... add value` inside a transaction (which is how migrations run)
+-- but forbids *using* the new value in that same transaction. Everything that
+-- references 'manual_sent' therefore lives in 0033.
+
+alter type questionnaire_context add value if not exists 'manual_sent';

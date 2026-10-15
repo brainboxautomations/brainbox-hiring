@@ -1,0 +1,215 @@
+name: CI
+
+# The repo's default branch is `main`. The previous config targeted
+# develop/stage/master, so CI had never actually run.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  merge_group:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# The Supabase CLI that test-integration and test-db install. The SHA-256 of the
+# linux_amd64 tarball is pinned here so a tampered checksums file cannot vouch
+# for a tampered binary. Bump both together.
+env:
+  SUPABASE_CLI_VERSION: 2.121.0
+  SUPABASE_CLI_SHA256: 4b481189efbdc57cf2d37bdee5f1a0d29574314398564b32a6dfb76c0fcf275f
+
+# package.json lives in frontend/ — every job runs from there.
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  secrets:
+    name: secrets (gitleaks)
+    runs-on: ubuntu-latest
+    # Scans the full history, not just the diff, using `.gitleaks.toml` at the
+    # repo root. Not gitleaks/gitleaks-action: it needs a paid license for
+    # organisation accounts. The release binary is pinned and checksum-verified
+    # instead; the SHA-256 is pinned here too, so a tampered checksums file
+    # cannot vouch for a tampered binary.
+    defaults:
+      run:
+        working-directory: .
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks
+        run: |
+          tarball="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          cd "$RUNNER_TEMP"
+          curl -sSfLO "$base/$tarball"
+          curl -sSfLO "$base/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep " ${tarball}\$" "gitleaks_${GITLEAKS_VERSION}_checksums.txt" | sha256sum -c -
+          echo "${GITLEAKS_SHA256}  ${tarball}" | sha256sum -c -
+          tar -xzf "$tarball" gitleaks
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - run: gitleaks version
+      - run: gitleaks git . --redact --no-banner
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --include=dev
+      - run: npm run lint
+
+  typecheck:
+    name: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --include=dev
+      - run: npm run type-check
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    # `configurations/env-configuration.ts` validates env at import time and
+    # throws during page-data collection, so the build cannot run without these.
+    # Build-time placeholders, not secrets — the anon key is public by design
+    # and nothing in CI talks to a real Supabase project.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --include=dev
+      - run: npm run build
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --include=dev
+      # Not `--if-present`: the suite must exist and must pass.
+      - run: npm run test:run
+
+  test-integration:
+    name: test:integration (L3)
+    runs-on: ubuntu-latest
+    # L3 drives the Route Handlers against a throwaway local Supabase stack that
+    # this job starts and stops. No repository secret is read: the stack's keys
+    # and database URL are the CLI's public local defaults, so the job works the
+    # same on a pull request from a fork. Each job has its own stack, so nothing
+    # needs serialising.
+    env:
+      # NEVER the real key. The Resend transport is mocked at the module
+      # boundary; this placeholder is the second, independent guarantee that no
+      # test can send mail. Do not replace it with the production secret.
+      RESEND_API_KEY: l3-placeholder-the-transport-is-mocked
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      # Pinned and checksum-verified like gitleaks above. The tarball carries
+      # two binaries: `supabase` is a shim that forwards to `supabase-go`.
+      - name: Install the Supabase CLI
+        working-directory: ${{ runner.temp }}
+        run: |
+          tarball="supabase_${SUPABASE_CLI_VERSION}_linux_amd64.tar.gz"
+          base="https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}"
+          curl -sSfLO "$base/$tarball"
+          curl -sSfL "$base/checksums.txt" -o supabase_checksums.txt
+          grep " ${tarball}\$" supabase_checksums.txt | sha256sum -c -
+          echo "${SUPABASE_CLI_SHA256}  ${tarball}" | sha256sum -c -
+          tar -xzf "$tarball" supabase supabase-go
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - run: supabase --version
+      # `psql` is preinstalled on the GitHub-hosted Ubuntu images. L3 seeds its
+      # auth user through it, because auth/v1/signup sends a confirmation email.
+      - name: Check psql is available
+        run: psql --version
+      - run: npm ci --include=dev
+      # Applies every migration and supabase/seed.sql to a fresh database.
+      # Services the suites never touch are excluded (see `db:start`).
+      - name: Start the local Supabase stack
+        run: npm run db:start
+      # Public local defaults, written to the job env without being printed.
+      - name: Point the suite at the local stack
+        run: node ../scripts/local-supabase-env.mjs >> "$GITHUB_ENV"
+      - run: npm run test:integration
+      - name: Stop the local Supabase stack
+        if: always()
+        run: npm run db:stop
+
+  test-db:
+    name: test:db (pgTAP)
+    runs-on: ubuntu-latest
+    # L4 runs against a throwaway local Supabase stack that this job starts and
+    # stops, built from the same migrations as the hosted projects. No repository
+    # secret is read, so the job works on a pull request from a fork, and each
+    # job has its own database, so nothing needs serialising.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Pinned and checksum-verified, the same as in test-integration.
+      - name: Install the Supabase CLI
+        working-directory: ${{ runner.temp }}
+        run: |
+          tarball="supabase_${SUPABASE_CLI_VERSION}_linux_amd64.tar.gz"
+          base="https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}"
+          curl -sSfLO "$base/$tarball"
+          curl -sSfL "$base/checksums.txt" -o supabase_checksums.txt
+          grep " ${tarball}\$" supabase_checksums.txt | sha256sum -c -
+          echo "${SUPABASE_CLI_SHA256}  ${tarball}" | sha256sum -c -
+          tar -xzf "$tarball" supabase supabase-go
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - run: supabase --version
+      # `psql` is preinstalled on the GitHub-hosted Ubuntu images; assert it
+      # rather than discovering its absence through a confusing runner error.
+      - name: Check psql is available
+        run: psql --version
+      # No `npm ci`: the runner and the env script use only Node built-ins.
+      - name: Start the local Supabase stack
+        run: npm run db:start
+      # Public local defaults, written to the job env without being printed.
+      - name: Point the suite at the local stack
+        run: node ../scripts/local-supabase-env.mjs >> "$GITHUB_ENV"
+      # The runner fails loudly on a missing plan, a SQL error or a file that ran
+      # no tests, rather than reporting green while RLS goes untested.
+      - run: npm run test:db
+      - name: Stop the local Supabase stack
+        if: always()
+        run: npm run db:stop

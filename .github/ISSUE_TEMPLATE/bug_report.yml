@@ -1,0 +1,75 @@
+name: Bug report
+description: Something in BrainBox ATS doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem.
+
+        **Security problems don't belong here.** Report them privately as described in SECURITY.md.
+
+        Never paste real candidate data, email addresses, keys or connection strings into an issue.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to …
+        2. Click …
+        3. See …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The release or commit you are running.
+      placeholder: v1.0.0, or a commit hash
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where does it happen?
+      options:
+        - Local development
+        - A self-hosted deployment
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Hosting and browser
+      description: Where the app runs (for example AWS Amplify or your own server) and the browser, if relevant.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, errors or screenshots
+      description: Server logs, browser console errors or screenshots. Remove personal data and secrets first.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this hasn't been reported.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
+        - label: I removed candidate data, email addresses and secrets from everything above.
+          required: true

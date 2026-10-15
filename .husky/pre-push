@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Brainbox ATS — pre-push gate.
+#
+# lint → typecheck → build → unit tests, all run inside `frontend/` (which owns
+# package.json). Skip with `git push --no-verify` if you really need to (e.g. a
+# known-broken WIP branch you want to share); don't make it a habit.
+
+set -e
+
+CYAN="\033[0;36m"
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+YELLOW="\033[0;33m"
+DIM="\033[2m"
+NC="\033[0m"
+
+step() { printf "${CYAN}▸ %s${NC}\n" "$1"; }
+ok()   { printf "${GREEN}✓ %s${NC}\n" "$1"; }
+warn() { printf "${YELLOW}⚠ %s${NC}\n" "$1"; }
+fail() { printf "${RED}✗ %s${NC}\n" "$1"; exit 1; }
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root/frontend"
+
+# ── 0. main-sync warning (non-blocking) ──────────────────────────────────────
+current_branch="$(git symbolic-ref --short HEAD 2>/dev/null || echo '(detached)')"
+if [[ "$current_branch" != "main" ]]; then
+  step "Checking sync with origin/main"
+  if git fetch origin main --quiet 2>/dev/null; then
+    behind="$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)"
+    if [[ "$behind" -gt 0 ]]; then
+      warn "$current_branch is $behind commit(s) behind origin/main."
+      printf "${DIM}  CI builds against main+your branch. Local pass ≠ CI pass.${NC}\n"
+      printf "${DIM}  Consider: git merge origin/main --no-edit${NC}\n"
+    else
+      ok "Up to date with origin/main"
+    fi
+  else
+    warn "Could not fetch origin/main (offline?). Skipping sync check."
+  fi
+fi
+
+# ── 1. Lint ──────────────────────────────────────────────────────────────────
+step "Lint  (npm run lint)"
+npm run lint --silent || fail "Lint failed. Fix the reported issues."
+ok "Lint clean"
+
+# ── 2. Typecheck ─────────────────────────────────────────────────────────────
+step "Typecheck  (npm run type-check)"
+npm run type-check --silent || fail "Typecheck failed. See errors above."
+ok "Typecheck clean"
+
+# ── 3. Build ─────────────────────────────────────────────────────────────────
+# `next build` is the slow step (~30s). Worth it: it catches static-prerender
+# breakage (useSearchParams without Suspense, etc.) that nothing else surfaces.
+# Needs NEXT_PUBLIC_SUPABASE_* — env validation throws at page-data collection.
+step "Build  (npm run build) — slowest step, ~30s"
+npm run build --silent || fail "Build failed."
+ok "Build clean"
+
+# ── 4. Unit tests ────────────────────────────────────────────────────────────
+step "Unit tests  (npm run test:run)"
+npm run test:run --silent || fail "Unit tests failed."
+ok "Unit tests pass"
+
+printf "\n${GREEN}✓ Pre-push pipeline passed.${NC}\n"

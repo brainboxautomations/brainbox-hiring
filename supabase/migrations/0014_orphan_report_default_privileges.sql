@@ -1,0 +1,26 @@
+-- Follow-up to 0011: `revoke all ... from public` was not enough.
+--
+-- This project carries a default-privileges rule that Supabase installs on every
+-- database:
+--
+--   alter default privileges in schema public
+--     grant execute on functions to anon, authenticated, service_role;
+--
+-- (`select defaclacl from pg_default_acl where defaclobjtype = 'f'` shows it.)
+--
+-- So a new function in `public` does not merely inherit EXECUTE from PUBLIC — it
+-- is granted EXECUTE *directly* to anon and authenticated at creation time.
+-- Revoking from PUBLIC leaves those direct grants untouched, which is why
+-- `orphaned_application_uploads` was still on the anonymous API surface after
+-- 0011 and 05_anon_storage_upload.test.sql kept failing.
+--
+-- The general rule this establishes, and the reason it is written down here:
+-- **every function added to `public` on this project is anon-callable the moment
+-- it is created.** A new function is on the public API by default and has to be
+-- revoked off it deliberately. `revoke ... from public` alone will not do it;
+-- anon and authenticated must be named.
+--
+-- 0009's and 0010's functions are unaffected — they are meant to be callable by
+-- anon, and their explicit grants say so rather than relying on this default.
+revoke execute on function public.orphaned_application_uploads(interval) from anon;
+revoke execute on function public.orphaned_application_uploads(interval) from authenticated;

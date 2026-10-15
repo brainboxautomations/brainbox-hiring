@@ -1,0 +1,74 @@
+{
+  "name": "brainbox-ats-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "node --env-file-if-exists=.env --env-file-if-exists=.env.local ./node_modules/.bin/vitest run --config vitest.integration.config.ts",
+    "test:db": "node --env-file-if-exists=.env --env-file-if-exists=.env.local ../supabase/tests/run.mjs",
+    "test:integration:local": "node ../scripts/local-supabase-env.mjs -- npm run test:integration",
+    "test:db:local": "node ../scripts/local-supabase-env.mjs -- npm run test:db",
+    "db:start": "supabase start --workdir .. -x studio,imgproxy,edge-runtime,realtime,mailpit,postgres-meta,logflare,vector,storage-api",
+    "db:stop": "supabase stop --workdir .. --no-backup",
+    "format": "prettier --write .",
+    "prepare": "cd .. && husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1147.0",
+    "@aws-sdk/s3-request-presigner": "^3.1147.0",
+    "@hookform/resolvers": "^5.2.2",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.110.0",
+    "@tanstack/react-query": "^5.100.10",
+    "@tanstack/react-query-devtools": "^5.100.10",
+    "@uiw/react-markdown-preview": "^5.2.1",
+    "@uiw/react-md-editor": "^4.1.1",
+    "axios": "^1.16.1",
+    "clsx": "^2.1.1",
+    "docx-preview": "0.4.1",
+    "lucide-react": "^1.38.0",
+    "next": "16.2.12",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.75.0",
+    "react-loading-skeleton": "^3.5.0",
+    "resend": "^6.18.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.2",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.12",
+    "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.6"
+  }
+}

@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/*
+  Brainbox ATS — Design Tokens
+  Derived from the design system (Design System.dc.html).
+  Slate / green / amber / red intentionally reuse Tailwind's built-in
+  palette (identical hex values). Only the custom blue accent scale,
+  radii, shadows, and fonts are defined here.
+*/
+
+@theme {
+  /* Fonts — Geist for UI, Geist Mono for identifiers/timestamps/labels */
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Primary accent — blue (Radix-style 1..12 scale) */
+  --color-accent-1: #fdfdfe;
+  --color-accent-2: #f7f9ff;
+  --color-accent-3: #edf2fe;
+  --color-accent-4: #dfeaff;
+  --color-accent-5: #d0dfff;
+  --color-accent-6: #bdd1ff;
+  --color-accent-7: #a6bff9;
+  --color-accent-8: #87a5ef;
+  --color-accent-9: #3d63dd; /* primary — buttons, focus, active */
+  --color-accent-10: #3657c3; /* hover */
+  --color-accent-11: #395bc7; /* accent text */
+  --color-accent-12: #1d2e5c; /* deepest — on-dark brand */
+
+  /* Radius — small, sharp corners */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  /* Elevation — borders first, shadow sparingly */
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-popover: 0 4px 14px rgba(15, 23, 42, 0.1);
+  --shadow-modal: 0 16px 48px rgba(15, 23, 42, 0.18);
+  --shadow-bulk: 0 8px 28px rgba(15, 23, 42, 0.28);
+}
+
+:root {
+  --background: #f8fafc; /* slate-50 */
+  --foreground: #0f172a; /* slate-900 */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 13px; /* dense base per design system */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ds-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+/* Thin, unobtrusive scrollbars for dense data surfaces */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Rendered email bodies (compose preview, template preview, thread). The HTML
+   comes from utilities/rich-text.ts, which emits only p / h2 / ul / li / a /
+   strong / em / u — Tailwind's preflight strips their default spacing, so it is
+   restored here rather than with a utility class on every element. */
+.email-body > * + * {
+  margin-top: 0.85em;
+}
+
+.email-body h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.email-body ul {
+  list-style: disc;
+  padding-left: 1.35em;
+}
+
+.email-body li + li {
+  margin-top: 0.3em;
+}
+
+.email-body a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.email-body strong {
+  font-weight: 600;
+}
+
+/* Rendered Markdown (job description: the editor's live pane, the candidate
+   preview modal, and the public careers page). @uiw/react-markdown-preview
+   wraps its output in .wmde-markdown and its stylesheet restores list padding
+   but not list-style, because it assumes browser defaults — and Tailwind's
+   preflight has already set `ul, ol { list-style: none }`. Without this the
+   bullets and numbers are invisible everywhere a description is shown. Same
+   cause and cure as the .email-body rules above. */
+.wmde-markdown ul {
+  list-style-type: disc;
+}
+
+.wmde-markdown ol {
+  list-style-type: decimal;
+}
+
+/* Checkbox lists draw their own control, so the vendor hides the marker on
+   `.task-list-item`. Repeated here because the vendor stylesheet is imported
+   from the components, which load after this file — at equal specificity its
+   rule would win, and the `ul` rule above would put a bullet back beside every
+   checkbox. Nested lists (ul ol, ul ul ol) need no such help: those vendor
+   selectors are already more specific than anything here. */
+.wmde-markdown li.task-list-item {
+  list-style-type: none;
+}
+
+/* The same instant press the Button component gives, for call-to-action
+   elements that are not buttons (a link styled as one, like the careers
+   site's "Apply for this role"). Without it a tap shows nothing until the
+   next page arrives. Deliberately no transition: the press should be instant,
+   and a `transition` here would override the element's own colour fade. */
+.press:active {
+  transform: scale(0.97);
+}
