@@ -30,9 +30,16 @@ export function AuthProvider({ children, initialSession }: AuthProviderProps) {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
+
+      // Supabase fires INITIAL_SESSION on every new subscription, to hand
+      // over the session that already exists — not a sign-in or a sign-out.
+      // router.refresh() changes the `router` reference below on some
+      // routes, which re-runs this effect, which re-subscribes, which fires
+      // INITIAL_SESSION again: a loop with no real event behind it.
+      if (event === "INITIAL_SESSION") return;
 
       router.refresh();
     });
