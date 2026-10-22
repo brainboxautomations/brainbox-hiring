@@ -39,9 +39,8 @@ any rights to the **names and logos** of BrainBox Automations or its products.
 - Suggest that BrainBox Automations made, endorses, supports or is responsible
   for your version or your service when it isn't.
 
-These rules sit alongside the license. Even under a different name, offering
-the software as a competing product is not allowed; see
-[LICENSE-FAQ.md](LICENSE-FAQ.md).
+These rules sit alongside the license and apply regardless of what you build
+with the code, including a competing product.
 
 ## Questions
 

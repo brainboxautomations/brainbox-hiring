@@ -8,6 +8,13 @@ When you upgrade, read every entry since your version: new migrations, new
 environment variables and one-off steps are listed here. See
 [docs/self-hosting.md](docs/self-hosting.md#upgrading).
 
+## [Unreleased]
+
+### Changed
+
+- Relicensed from the PolyForm Shield License 1.0.0 to the MIT License. See
+  [LICENSE](LICENSE).
+
 ## [1.0.0] - 2026-10-15
 
 The first public release, source-available under the PolyForm Shield License

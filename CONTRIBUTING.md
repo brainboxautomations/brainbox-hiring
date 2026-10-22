@@ -133,6 +133,5 @@ Apache-2.0, ISC or BSD).
 
 ## License
 
-BrainBox ATS is source-available under the
-[PolyForm Shield License 1.0.0](LICENSE). Your contributions are covered by the
-[CLA](CLA.md).
+BrainBox ATS is open source under the [MIT License](LICENSE). Your
+contributions are covered by the [CLA](CLA.md).

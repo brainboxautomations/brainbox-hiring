@@ -2,9 +2,9 @@
 
 An applicant tracking system for one hiring team: public careers pages,
 pipelines, two-way candidate email, questionnaires and stage automation.
-Source-available and free to self-host.
+Open source and free to self-host.
 
-[![License: PolyForm Shield 1.0.0](https://img.shields.io/badge/license-PolyForm%20Shield%201.0.0-blue)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ## What it is
 
@@ -126,19 +126,10 @@ self-hosting, deployment and testing.
 
 ## License
 
-BrainBox ATS is **source-available** under the
-[PolyForm Shield License 1.0.0](LICENSE). In plain words:
-
-- Any company may use, modify and self-host it for its own hiring, free of
-  charge, including commercially.
-- You may not offer it, or something built from it, as an ATS product or
-  service for other organisations, paid or free, or as a substitute for
-  BrainBox Automations' own offering.
-
-[LICENSE-FAQ.md](LICENSE-FAQ.md) explains what is and isn't allowed, with
-examples such as recruitment agencies and consultants. The
-[LICENSE](LICENSE) is what governs. The BrainBox name and logo are not covered
-by the license; see [TRADEMARKS.md](TRADEMARKS.md).
+BrainBox ATS is **open source** under the [MIT License](LICENSE). Anyone may
+use, modify, self-host, distribute and build on it, including commercially,
+with no restriction on competing uses. The BrainBox name and logo are not
+covered by the license; see [TRADEMARKS.md](TRADEMARKS.md).
 
 ## Contributing
 
