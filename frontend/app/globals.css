@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  Brainbox ATS — Design Tokens
+  openHR — Design Tokens
   Derived from the design system (Design System.dc.html).
   Slate / green / amber / red intentionally reuse Tailwind's built-in
   palette (identical hex values). Only the custom blue accent scale,

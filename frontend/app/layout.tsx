@@ -3,7 +3,7 @@ import { ApplicationLayout } from "@/components/templates/application-layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BrainBox ATS",
+  title: "openHR",
   description: "Applicant tracking system.",
 };
 

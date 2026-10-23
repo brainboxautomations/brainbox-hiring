@@ -6,7 +6,7 @@ beforeAll(() => {
   process.env.R2_ACCOUNT_ID = "testaccount";
   process.env.R2_ACCESS_KEY_ID = "test-access-key";
   process.env.R2_SECRET_ACCESS_KEY = "test-secret-key";
-  process.env.R2_BUCKET = "brainbox-ats-test";
+  process.env.R2_BUCKET = "openhr-test";
 });
 
 const storage = () => import("@/configurations/object-storage");
@@ -40,7 +40,7 @@ describe("signUpload", () => {
       }),
     );
 
-    expect(url.host).toBe("brainbox-ats-test.testaccount.r2.cloudflarestorage.com");
+    expect(url.host).toBe("openhr-test.testaccount.r2.cloudflarestorage.com");
     expect(url.pathname).toBe("/resumes/applications/p/x-cv.pdf");
     const signed = url.searchParams.get("X-Amz-SignedHeaders")?.split(";") ?? [];
     expect(signed).toEqual(expect.arrayContaining(["content-length", "content-type", "host"]));

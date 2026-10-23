@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ForgotPasswordForm } from "@/components/organisms/forgot-password-form";
 
 export const metadata: Metadata = {
-  title: "Reset password · BrainBox ATS",
+  title: "Reset password · openHR",
 };
 
 export default function ForgotPasswordPage() {

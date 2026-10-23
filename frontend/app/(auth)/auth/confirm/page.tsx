@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ConfirmEmailLink } from "@/components/organisms/confirm-email-link";
 
 export const metadata: Metadata = {
-  title: "Continue · BrainBox ATS",
+  title: "Continue · openHR",
 };
 
 export default function ConfirmEmailPage() {

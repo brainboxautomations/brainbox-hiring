@@ -13,7 +13,7 @@ type NavKind = "page" | "inline";
 /**
  * `brand` covers a page change with the full-screen Brainbox loader, which
  * suits the staff app. `bar` uses only the thin top progress bar: on the
- * careers site and the login screen an internal "Brainbox ATS" splash over
+ * careers site and the login screen an internal "openHR" splash over
  * the page would be out of place, but a click still needs visible feedback.
  */
 type PageLoader = "brand" | "bar";
