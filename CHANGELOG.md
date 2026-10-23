@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to BrainBox ATS are recorded here. The format is based on
+All notable changes to openHR are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -12,6 +12,7 @@ environment variables and one-off steps are listed here. See
 
 ### Changed
 
+- Renamed the project from BrainBox ATS to openHR.
 - Relicensed from the PolyForm Shield License 1.0.0 to the MIT License. See
   [LICENSE](LICENSE).
 

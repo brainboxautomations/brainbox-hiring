@@ -1,6 +1,6 @@
 # BrainBox Contributor License Agreement
 
-Thank you for contributing to BrainBox ATS. Before we can merge your first
+Thank you for contributing to openHR. Before we can merge your first
 pull request, we need you to agree to the terms below. You sign once, by
 following the prompt the CLA Assistant bot posts on your pull request, and
 the agreement covers all your future contributions to this project.

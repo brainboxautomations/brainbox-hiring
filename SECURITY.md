@@ -1,6 +1,6 @@
 # Security policy
 
-BrainBox ATS stores personal data about job candidates, so we take security
+openHR stores personal data about job candidates, so we take security
 reports seriously. Thank you for helping keep its users safe.
 
 ## Supported versions
@@ -23,7 +23,7 @@ Report privately, in one of two ways:
 
 1. **GitHub private vulnerability reporting (preferred):** on this repository,
    open the **Security** tab and choose **Report a vulnerability**.
-2. **Email:** `security@brainboxautomations.com`, if you can't use GitHub.
+2. **Email:** `dev@brainboxautomations.com`, if you can't use GitHub.
 
 Please include as much of this as you can:
 

@@ -1,4 +1,4 @@
-# BrainBox ATS
+# openHR
 
 An applicant tracking system for one hiring team: public careers pages,
 pipelines, two-way candidate email, questionnaires and stage automation.
@@ -8,7 +8,7 @@ Open source and free to self-host.
 
 ## What it is
 
-BrainBox ATS runs your company's hiring in one place. Candidates find open
+openHR runs your company's hiring in one place. Candidates find open
 roles on your careers pages and apply; your team moves them through a pipeline,
 emails them from the app, sends questionnaires and lets each stage do its own
 follow-up.
@@ -126,7 +126,7 @@ self-hosting, deployment and testing.
 
 ## License
 
-BrainBox ATS is **open source** under the [MIT License](LICENSE). Anyone may
+openHR is **open source** under the [MIT License](LICENSE). Anyone may
 use, modify, self-host, distribute and build on it, including commercially,
 with no restriction on competing uses. The BrainBox name and logo are not
 covered by the license; see [TRADEMARKS.md](TRADEMARKS.md).
@@ -146,7 +146,7 @@ Please don't report security problems in public issues. See
 
 ## Hosted version
 
-BrainBox Automations plans to offer a hosted version of BrainBox ATS for
+BrainBox Automations plans to offer a hosted version of openHR for
 companies that would rather not run it themselves. Follow
 [brainboxautomations.com](https://www.brainboxautomations.com) for news.
 

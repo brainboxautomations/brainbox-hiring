@@ -1,6 +1,6 @@
 # Docs
 
-The root [`../README.md`](../README.md) says what BrainBox ATS is and how to get
+The root [`../README.md`](../README.md) says what openHR is and how to get
 started. These documents cover how to run, deploy and change it, and the
 **why**: how the system is shaped and how it is tested.
 

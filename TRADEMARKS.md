@@ -5,7 +5,7 @@ any rights to the **names and logos** of BrainBox Automations or its products.
 
 ## What this covers
 
-- The names **BrainBox**, **BrainBox ATS** and **BrainBox Automations**.
+- The names **BrainBox**, **openHR** and **BrainBox Automations**.
 - The BrainBox and BrainBox Automations logos and wordmarks, including:
   - `frontend/public/brainbox-wordmark.png`, which the app shows only when a
     deployment sets `COMPANY_LOGO_URL` to it. It is in the repository for
@@ -18,14 +18,14 @@ any rights to the **names and logos** of BrainBox Automations or its products.
 
 ## What you may do
 
-- **Self-host it as it is.** A company running BrainBox ATS for its own hiring
+- **Self-host it as it is.** A company running openHR for its own hiring
   may leave the product name, icons and wordmark in place, changed or not: the
-  app is still BrainBox ATS, and its candidate-facing pages already show your
+  app is still openHR, and its candidate-facing pages already show your
   company's own name and logo (see `COMPANY_*` in
   [docs/self-hosting.md](docs/self-hosting.md)).
 - **Keep the "Powered by BrainBox" link** in the careers page footer.
-- **Make accurate statements,** such as "based on BrainBox ATS", "a fork of
-  BrainBox ATS" or "we use BrainBox ATS for hiring".
+- **Make accurate statements,** such as "based on openHR", "a fork of
+  openHR" or "we use openHR for hiring".
 - **Refer to the project by name** when you write about it, review it or link
   to it.
 

@@ -1,6 +1,6 @@
-# Contributing to BrainBox ATS
+# Contributing to openHR
 
-Thanks for your interest in improving BrainBox ATS. This page covers what you
+Thanks for your interest in improving openHR. This page covers what you
 need to know before you open a pull request.
 
 By taking part you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -133,5 +133,5 @@ Apache-2.0, ISC or BSD).
 
 ## License
 
-BrainBox ATS is open source under the [MIT License](LICENSE). Your
+openHR is open source under the [MIT License](LICENSE). Your
 contributions are covered by the [CLA](CLA.md).
