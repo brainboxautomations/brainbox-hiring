@@ -1,6 +1,6 @@
 # Self-hosting
 
-How a company deploys its own copy of BrainBox ATS, in order, from an empty
+How a company deploys its own copy of openHR, in order, from an empty
 Supabase project to the first candidate. Each step says which environment
 variables it produces; the [full table](#environment-variables) is at the end.
 
@@ -125,7 +125,7 @@ In the Supabase dashboard:
    the app's public address, for example `https://hiring.example.com`. The
    password-reset email builds its link from it.
 4. **Paste the reset-password template:** Authentication → Emails → Reset
-   Password. Subject: `Reset your BrainBox ATS password`. Body: the whole of
+   Password. Subject: `Reset your openHR password`. Body: the whole of
    [`supabase/templates/reset-password.html`](../supabase/templates/reset-password.html).
    Its link opens `/auth/confirm`, which only uses the token when the person
    presses Continue, so link scanners in mail filters cannot use it up.

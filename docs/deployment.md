@@ -1,6 +1,6 @@
 # Deployment
 
-The reference for one way to run BrainBox ATS: a staging environment on **AWS
+The reference for one way to run openHR: a staging environment on **AWS
 Amplify Hosting**, building `main` on every push, and a separate production
 environment that only `scripts/promote.sh` updates (see
 [Promoting to production](#promoting-to-production)).

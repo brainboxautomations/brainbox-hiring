@@ -1,6 +1,6 @@
 # Development
 
-How to run BrainBox ATS on your machine, the commands, the git hooks, schema
+How to run openHR on your machine, the commands, the git hooks, schema
 changes and the test suites. To deploy your own copy for real use, follow
 [self-hosting.md](self-hosting.md) instead. Before contributing, read
 [CONTRIBUTING.md](../CONTRIBUTING.md).
