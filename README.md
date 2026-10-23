@@ -144,11 +144,10 @@ migrations and how pull requests are reviewed, and follow the
 Please don't report security problems in public issues. See
 [SECURITY.md](SECURITY.md) for how to report one privately.
 
-## Hosted version
+## Custom version
 
-BrainBox Automations plans to offer a hosted version of openHR for
-companies that would rather not run it themselves. Follow
-[brainboxautomations.com](https://www.brainboxautomations.com) for news.
+If you want a customized version of this app for your organization . Feel free to contact Brainbox at
+[brainboxautomations.com](https://www.brainboxautomations.com/contact) for more information.
 
 ---
 
