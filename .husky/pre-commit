@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Brainbox ATS — pre-commit. Scans staged changes for secrets, then formats and
+# openHR — pre-commit. Scans staged changes for secrets, then formats and
 # lints staged files.
 # gitleaks runs from the repo root so it picks up `.gitleaks.toml`. It is
 # optional locally (CI is the enforcer), so a missing binary only warns.

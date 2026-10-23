@@ -5,7 +5,7 @@
 # caught. Every entry is a fake value that a test relies on; none was ever a
 # real credential. Add a value here only after confirming it is fake.
 
-title = "Brainbox ATS gitleaks config"
+title = "openHR gitleaks config"
 
 [extend]
 useDefault = true

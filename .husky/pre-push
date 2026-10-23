@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Brainbox ATS — pre-push gate.
+# openHR — pre-push gate.
 #
 # lint → typecheck → build → unit tests, all run inside `frontend/` (which owns
 # package.json). Skip with `git push --no-verify` if you really need to (e.g. a

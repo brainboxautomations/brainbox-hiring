@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the suggestion. The scope of BrainBox ATS is deliberate: check "Deliberately absent" in docs/architecture.md first, in case it covers your idea.
+        Thanks for the suggestion. The scope of openHR is deliberate: check "Deliberately absent" in docs/architecture.md first, in case it covers your idea.
   - type: textarea
     id: problem
     attributes:

@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Report a security vulnerability
     url: https://github.com/brainboxautomations/brainbox-hiring/security/advisories/new
-    about: Never in a public issue. Use this repository's Security tab → Report a vulnerability, or email security@brainboxautomations.com. See SECURITY.md.
+    about: Never in a public issue. Use this repository's Security tab → Report a vulnerability, or email dev@brainboxautomations.com. See SECURITY.md.
